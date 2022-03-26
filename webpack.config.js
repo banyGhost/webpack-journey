@@ -9,7 +9,6 @@ module.exports = {
   },
   entry: {
     index: './src/index.js',
-    print: './src/print.js',
   },
   plugins: [
     new htmlWebPackPlugin({
@@ -17,7 +16,7 @@ module.exports = {
     }),
   ],
   output: {
-    filename: '[name].bundle.js',
+    filename: '[name].[contenthash].js',
     path: path.join(__dirname, 'dist'),
     clean: true,
   },
@@ -40,6 +39,19 @@ module.exports = {
   resolve: {
     alias: {
       assets: path.resolve(__dirname, 'src/assets'),
+    },
+  },
+  optimization: {
+    moduleIds: 'deterministic',
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
     },
   },
 };
